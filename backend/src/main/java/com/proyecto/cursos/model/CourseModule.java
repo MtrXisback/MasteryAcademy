@@ -31,6 +31,7 @@ public class CourseModule {
     private Course course;
 
     @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("orderIndex ASC")
     @Builder.Default
     private List<Lesson> lessons = new ArrayList<>();
 }

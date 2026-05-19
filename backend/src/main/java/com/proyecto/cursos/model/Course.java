@@ -43,8 +43,9 @@ public class Course {
     private Double duration;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("orderIndex ASC")
     @Builder.Default
-    private java.util.List<CourseModule> modules = new java.util.ArrayList<>();
+    private java.util.Set<CourseModule> modules = new java.util.LinkedHashSet<>();
 
     @Column(name = "created_at", updatable = false)
     private java.time.LocalDateTime createdAt;
