@@ -1,0 +1,76 @@
+# ====================================================================
+# CONFIGURACIÓN GLOBAL Y SECRETOS (¡CRÍTICO!)
+# ====================================================================
+.env
+.env.local
+*.local
+
+# ====================================================================
+# FRONTEND (Angular / Node)
+# ====================================================================
+# Ignora las dependencias y la caché en cualquier subcarpeta frontend
+node_modules/
+.angular/cache
+.sass-cache/
+
+# Salidas compiladas de Angular
+dist/
+tmp/
+out-tsc/
+bazel-out/
+coverage/
+
+# Logs de error de paquetes
+npm-debug.log
+yarn-error.log
+testem.log
+/libpeerconnection.log
+
+# Otros del ecosistema frontend
+/connect.lock
+/typings
+__screenshots__/
+
+# ====================================================================
+# BACKEND (Spring Boot / Java / Maven)
+# ====================================================================
+# Ignora la carpeta de compilación de Maven (target/) en cualquier subcarpeta backend
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Archivos pesados de logs y compilados ejecutables
+*.jar
+*.war
+*.ear
+*.class
+.mtj.tmp/
+
+# Crash logs de la Máquina Virtual de Java
+hs_err_pid*
+replay_pid*
+
+# ====================================================================
+# IDEs, EDITORES Y SISTEMA OPERATIVO
+# ====================================================================
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+.antigravity/
+
+# Visual Studio Code / Cursor / Antigravity
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+
+# Archivos del Sistema Operativo
+.DS_Store
+Thumbs.db
+desktop.ini

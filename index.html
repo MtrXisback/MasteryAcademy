@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llama 3.1 405B - Lanzamiento en AWS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside>
+        <div class="logo">META AI OPS</div>
+        <nav>
+            <ul>
+                <li class="active"><span>🚀</span> Dashboard</li>
+                <li><span>📊</span> Telemetría</li>
+                <li><span>⚙️</span> Configuración</li>
+                <li><span>🛠️</span> Herramientas</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <section class="launch-viewport">
+            <div class="stars" id="stars-container"></div>
+            <div class="vignette"></div>
+            <div class="rocket-stage">
+                <img src="rocket.png" id="rocket" alt="Rocket">
+            </div>
+        </section>
+
+        <section class="controls">
+            <div class="telemetry-grid">
+                <div class="metric">
+                    <div class="metric-label">Altitud</div>
+                    <div class="metric-value" id="alt-val">0 km</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Velocidad</div>
+                    <div class="metric-value" id="vel-val">0 km/h</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Latencia</div>
+                    <div class="metric-value" id="lat-val">-- ms</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Estado</div>
+                    <div class="metric-value" id="status-val">READY</div>
+                </div>
+            </div>
+
+            <div class="terminal" id="terminal-output">
+                <div class="terminal-line status-info">Iniciando sistema de despliegue Llama 3.1 405B...</div>
+                <div class="terminal-line status-cmd">>_ Esperando orden de lanzamiento...</div>
+            </div>
+
+            <div class="gpu-monitor">
+                <div class="gpu-header">
+                    <span class="metric-label">Carga GPU (Cluster H100)</span>
+                    <span class="metric-label" id="gpu-percent">0%</span>
+                </div>
+                <div class="gpu-bar-container">
+                    <div class="gpu-bar" id="gpu-bar"></div>
+                </div>
+            </div>
+
+            <button class="btn-launch" id="launch-btn">Despegar Llama 405B</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

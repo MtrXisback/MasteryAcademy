@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: cursos
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+  jpa:
+    defer-datasource-initialization: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8080
+
+proyecto:
+  app:
+    jwtSecret: ${JWT_SECRET}
+    jwtExpirationMs: 604800000
+    allowedOrigins: ${ALLOWED_ORIGINS}
+    adminDefaultPassword: ${ADMIN_DEFAULT_PASSWORD:AdminStrongPass123!}
+
+google:
+  clientId: ${GOOGLE_CLIENT_ID}
+
+github:
+  clientId: ${GITHUB_CLIENT_ID}
+  clientSecret: ${GITHUB_CLIENT_SECRET}
+
+culqi:
+  publicKey: ${CULQI_PUBLIC_KEY}
+  secretKey: ${CULQI_SECRET_KEY}

@@ -1,0 +1,3 @@
+-- Solo dejamos los cursos base si quieres, pero lo ideal es manejarlo todo desde DataInitializer para evitar conflictos
+INSERT INTO courses (title, description, instructor, price, category, level, status, duration) VALUES ('Master en Spring Boot 3', 'Aprende a construir microservicios robustos.', 'Ing. Roberto Gómez', 49.99, 'Desarrollo Backend', 'ADVANCED', 'PUBLISHED', 40.0);
+INSERT INTO courses (title, description, instructor, price, category, level, status, duration) VALUES ('Angular Avanzado', 'Domina componentes y Signals.', 'Lic. Ana Martínez', 39.99, 'Desarrollo Frontend', 'INTERMEDIATE', 'PUBLISHED', 35.0);
