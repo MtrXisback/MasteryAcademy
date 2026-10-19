@@ -1,0 +1,30 @@
+@startuml 09-pipeline-ci
+title Plan de Integración Continua - Flujo del pipeline (GitHub Actions)
+start
+:Desarrollador hace push a feature/* o develop\no abre un Pull Request;
+fork
+  partition "Job backend" {
+    :Checkout + JDK 17 (caché Maven);
+    :mvn verify\n(compilación + 14 pruebas JUnit);
+    :Publica reportes Surefire y JAR;
+  }
+fork again
+  partition "Job frontend" {
+    :Checkout + Node 20 (caché npm);
+    :npm ci;
+    :ng build (producción);
+  }
+end fork
+if (¿Ambos jobs exitosos?) then (sí)
+  partition "Job docker" {
+    :docker build mastery-api;
+    :docker build mastery-web;
+  }
+  :Merge a develop / main\n(revisión del Pull Request);
+  :Tag de versión (v1.0.0)\ny despliegue en GCP;
+  stop
+else (no)
+  :Pipeline en rojo:\nse bloquea el merge y\nse notifica al equipo;
+  stop
+endif
+@enduml

@@ -1,0 +1,176 @@
+@startuml 03-modelo-datos
+title Modelo Físico de Datos (PostgreSQL 16) - Mastery Academy
+hide circle
+skinparam linetype ortho
+skinparam entity {
+  BackgroundColor #FFFDF5
+  BorderColor #8B6F1E
+}
+
+entity users {
+  * id : bigserial <<PK>>
+  --
+  * username : varchar <<UK>>
+  * email : varchar <<UK>>
+  * password : varchar
+  full_name : varchar
+  xp : int
+  level : int
+  auth_provider : varchar
+  featured : boolean
+}
+entity roles {
+  * id : serial <<PK>>
+  --
+  name : varchar
+}
+entity user_roles {
+  * user_id : bigint <<FK>>
+  * role_id : int <<FK>>
+}
+entity categories {
+  * id : bigserial <<PK>>
+  --
+  * name : varchar <<UK>>
+  description : varchar
+}
+entity courses {
+  * id : bigserial <<PK>>
+  --
+  title : varchar
+  description : varchar
+  price : float8
+  level : varchar
+  status : varchar
+  duration : float8
+  instructor_id : bigint <<FK>>
+  category_id : bigint <<FK>>
+  created_at, updated_at : timestamp
+  created_by, last_modified_by : varchar
+  * version : bigint
+}
+entity user_courses {
+  * user_id : bigint <<FK>>
+  * course_id : bigint <<FK>>
+  --
+  UK (user_id, course_id)
+}
+entity course_modules {
+  * id : bigserial <<PK>>
+  --
+  name : varchar
+  order_index : int
+  course_id : bigint <<FK>>
+}
+entity lessons {
+  * id : bigserial <<PK>>
+  --
+  title : varchar
+  content_url : varchar
+  order_index : int
+  is_exercise : boolean
+  module_id : bigint <<FK>>
+}
+entity quizzes {
+  * id : bigserial <<PK>>
+  --
+  title : varchar
+  passing_score : int
+  course_id : bigint <<FK>>
+}
+entity questions {
+  * id : bigserial <<PK>>
+  --
+  text : varchar
+  correct_answer_index : int
+  quiz_id : bigint <<FK>>
+}
+entity payments {
+  * id : bigserial <<PK>>
+  --
+  user_id : bigint
+  course_id : bigint
+  culqi_charge_id : varchar <<UK>>
+  amount : bigint
+  status : varchar
+  created_at, updated_at : timestamp
+  * version : bigint
+}
+entity user_progress {
+  * id : bigserial <<PK>>
+  --
+  user_id : bigint <<FK>>
+  lesson_id : bigint <<FK>>
+  completed_at : timestamp
+  UK (user_id, lesson_id)
+}
+entity certificates {
+  * id : bigserial <<PK>>
+  --
+  certificate_code : varchar <<UK>>
+  user_id : bigint <<FK>>
+  course_id : bigint <<FK>>
+  issued_at : timestamp
+}
+entity reviews {
+  * id : bigserial <<PK>>
+  --
+  rating : int
+  comment : varchar
+  user_id : bigint <<FK>>
+  course_id : bigint <<FK>>
+}
+entity comments {
+  * id : bigserial <<PK>>
+  --
+  content : varchar
+  user_id : bigint <<FK>>
+  lesson_id : bigint <<FK>>
+}
+entity chat_messages {
+  * id : bigserial <<PK>>
+  --
+  sender_id : bigint <<FK>>
+  recipient_id : bigint <<FK>>
+  course_id : bigint <<FK>>
+  content : varchar
+  is_read : boolean
+}
+entity notifications {
+  * id : bigserial <<PK>>
+  --
+  user_id : bigint <<FK>>
+  title, message : varchar
+  type : varchar
+  is_read : boolean
+}
+entity news {
+  * id : bigserial <<PK>>
+  --
+  title, content : varchar
+  tag, sentiment : varchar
+}
+
+users ||--o{ user_roles
+roles ||--o{ user_roles
+users ||--o{ user_courses
+courses ||--o{ user_courses
+users |o--o{ courses : instructor
+categories |o--o{ courses
+courses ||--o{ course_modules
+course_modules ||--o{ lessons
+courses ||--o| quizzes
+quizzes ||--o{ questions
+users ||--o{ user_progress
+lessons ||--o{ user_progress
+users ||--o{ certificates
+courses ||--o{ certificates
+users ||--o{ reviews
+courses ||--o{ reviews
+users ||--o{ comments
+lessons ||--o{ comments
+users ||--o{ chat_messages
+users ||--o{ notifications
+users ||..o{ payments
+courses ||..o{ payments
+@enduml

@@ -1,0 +1,154 @@
+@startuml 02-clases
+title Diagrama de Clases del Dominio - Mastery Academy
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFDF5
+  BorderColor #8B6F1E
+  ArrowColor #444444
+}
+hide empty methods
+
+enum ERole {
+  ROLE_STUDENT
+  ROLE_INSTRUCTOR
+  ROLE_ADMIN
+}
+enum ECourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+enum ECourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+class Role {
+  - id: Integer
+  - name: ERole
+}
+class User {
+  - id: Long
+  - username: String
+  - email: String
+  - password: String «BCrypt»
+  - fullName: String
+  - xp: Integer
+  - level: Integer
+  - authProvider: String
+  - featured: Boolean
+}
+
+class Category {
+  - id: Long
+  - name: String
+  - description: String
+}
+class Course {
+  - id: Long
+  - title: String
+  - description: String
+  - price: Double
+  - level: ECourseLevel
+  - status: ECourseStatus
+  - duration: Double
+  - createdAt / updatedAt
+  - createdBy / lastModifiedBy «auditoría»
+  - version: Long «@Version»
+}
+
+class CourseModule {
+  - id: Long
+  - name: String
+  - orderIndex: Integer
+}
+class Lesson {
+  - id: Long
+  - title: String
+  - contentUrl: String
+  - orderIndex: Integer
+  - isExercise: Boolean
+}
+
+class Quiz {
+  - id: Long
+  - title: String
+  - passingScore: Integer
+}
+class Question {
+  - id: Long
+  - text: String
+  - options: List<String>
+  - correctAnswerIndex: Integer
+}
+class Payment {
+  - id: Long
+  - userId: Long
+  - courseId: Long
+  - culqiChargeId: String «único»
+  - amount: Long «céntimos»
+  - status: String
+  - createdAt / updatedAt
+  - version: Long «@Version»
+}
+
+class UserProgress {
+  - id: Long
+  - completedAt: LocalDateTime
+}
+class Certificate {
+  - id: Long
+  - certificateCode: String
+  - issuedAt: LocalDateTime
+}
+class Review {
+  - id: Long
+  - rating: Integer
+  - comment: String
+}
+class Comment {
+  - id: Long
+  - content: String
+}
+class ChatMessage {
+  - id: Long
+  - content: String
+  - isRead: boolean
+}
+class Notification {
+  - id: Long
+  - title: String
+  - type
+  - isRead: boolean
+}
+class News {
+  - id: Long
+  - title: String
+  - tag: String
+  - sentiment: String
+}
+User "*" -- "*" Role : roles >
+User "*" -- "*" Course : inscritos >
+Course "*" --> "0..1" User : instructor
+Course "*" --> "0..1" Category
+Course "1" *-- "*" CourseModule
+CourseModule "1" *-- "*" Lesson
+Course "1" -- "0..1" Quiz
+Quiz "1" *-- "*" Question
+User "1" -- "*" UserProgress
+UserProgress "*" --> "1" Lesson
+User "1" -- "*" Certificate
+Certificate "*" --> "1" Course
+User "1" -- "*" Review
+Review "*" --> "1" Course
+User "1" -- "*" Comment
+Comment "*" --> "1" Lesson
+ChatMessage "*" --> "1" User : sender
+ChatMessage "*" --> "1" User : recipient
+Notification "*" --> "1" User
+Payment ..> User : userId
+Payment ..> Course : courseId
+User ..> ERole
+Course ..> ECourseLevel
+Course ..> ECourseStatus
+@enduml

@@ -1,0 +1,18 @@
+@startwbs 08-organigrama
+title Organigrama del Proyecto - Grupo 5
+<style>
+wbsDiagram {
+  node { BackgroundColor #FFF8E1
+  LineColor #8B6F1E
+  RoundCorner 10 }
+  :depth(0) { BackgroundColor #1F2937
+  FontColor white }
+}
+</style>
+* Docente monitor\nWilliam Manuel Tapia Cruz
+** Jefe de Proyecto / Coordinador / Scrum Master\nMiguel Alonso Villon Alcantara
+*** Programador Full Stack\nMiguel Alonso Villon Alcantara
+*** Analista Senior / Product Owner\nRogger Adner Velasquez Zavaleta
+**** Analista Financiero (función asumida)\nRogger Adner Velasquez Zavaleta
+**** Asesoría Legal (función asumida)\nRogger Adner Velasquez Zavaleta
+@endwbs

@@ -1,0 +1,30 @@
+@startuml 05-secuencia-reporte
+title Diagrama de Secuencia - CU16 Exportar reporte
+autonumber
+actor Administrador as A
+participant "Angular\n(reports.ts)" as FE
+participant "AuthTokenFilter\n+ @PreAuthorize" as SEC
+participant "ReportController" as RC
+participant "ReportService" as RS
+participant "ReportExporter" as RE
+database "PostgreSQL" as DB
+
+A -> FE : Elige tipo, fechas y formato
+FE -> SEC : GET /api/reports/ventas?format=pdf&from&to\nAuthorization: Bearer JWT
+SEC -> SEC : Validar firma JWT y rol ADMIN
+alt Sin token
+  SEC --> FE : 401 Unauthorized
+else Rol distinto de ADMIN
+  SEC --> FE : 403 Forbidden
+else Autorizado
+  SEC -> RC : export(type, format, from, to)
+  RC -> RS : build(VENTAS, from, to)
+  RS -> DB : SELECT payments JOIN users JOIN courses
+  DB --> RS : filas
+  RS --> RC : ReportTable (cabeceras, filas, totales)
+  RC -> RE : export(table, PDF | XLSX | CSV)
+  RE --> RC : byte[]
+  RC --> FE : 200 + Content-Disposition: attachment
+  FE --> A : Descarga reporte-ventas-AAAAMMDD.pdf
+end
+@enduml

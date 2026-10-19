@@ -1,0 +1,61 @@
+@startuml 01-casos-de-uso
+title Diagrama de Casos de Uso - Mastery Academy
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #FFF8E1
+  BorderColor #B8860B
+}
+
+actor "Visitante" as V
+actor "Estudiante" as E
+actor "Instructor" as I
+actor "Administrador" as A
+actor "Pasarela Culqi" as C <<sistema>>
+actor "Google / GitHub\nOAuth" as O <<sistema>>
+
+V <|-- E
+
+rectangle "Plataforma Mastery Academy" {
+  usecase "CU01 Explorar catálogo\nde cursos" as CU01
+  usecase "CU02 Registrarse /\nIniciar sesión" as CU02
+  usecase "CU03 Comprar curso" as CU03
+  usecase "CU04 Pagar con tarjeta" as CU04
+  usecase "CU05 Ver lecciones y\nregistrar progreso" as CU05
+  usecase "CU06 Rendir examen final" as CU06
+  usecase "CU07 Obtener certificado" as CU07
+  usecase "CU08 Comentar y calificar" as CU08
+  usecase "CU09 Mensajería con\ninstructor" as CU09
+  usecase "CU10 Consultar copiloto IA" as CU10
+  usecase "CU11 Gestionar cursos,\nmódulos y lecciones" as CU11
+  usecase "CU12 Gestionar exámenes" as CU12
+  usecase "CU13 Gestionar usuarios\ny roles" as CU13
+  usecase "CU14 Gestionar noticias\nde mercado" as CU14
+  usecase "CU15 Ver panel de\nindicadores" as CU15
+  usecase "CU16 Exportar reportes\n(PDF / Excel / CSV)" as CU16
+}
+
+V --> CU01
+V --> CU02
+E --> CU03
+E --> CU05
+E --> CU06
+E --> CU08
+E --> CU09
+E --> CU10
+I --> CU11
+I --> CU12
+I --> CU09
+A --> CU11
+A --> CU13
+A --> CU14
+A --> CU15
+A --> CU16
+
+CU03 ..> CU04 : <<include>>
+CU06 ..> CU07 : <<extend>>
+CU04 --> C
+CU02 --> O
+CU15 ..> CU16 : <<extend>>
+@enduml

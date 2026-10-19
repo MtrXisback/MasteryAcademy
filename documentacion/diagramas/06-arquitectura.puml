@@ -1,0 +1,54 @@
+@startuml 06-arquitectura
+title Arquitectura de n Capas y Despliegue en la Nube - Mastery Academy
+skinparam componentStyle rectangle
+skinparam node {
+  BackgroundColor #FFFDF5
+  BorderColor #8B6F1E
+}
+
+actor "Usuario\n(navegador / móvil)" as U
+
+cloud "Google Cloud Platform - Compute Engine (IaaS)\nRegión southamerica-west1 (Santiago)" as GCP {
+  node "VM Linux + Docker Compose" as VM {
+    node "Contenedores nginx-proxy + certbot" as EDGE {
+      component "Proxy inverso HTTPS\nTLS Let's Encrypt\n(puertos 80/443)" as PROXY
+    }
+    node "Contenedor web (Nginx)" as WEB {
+      component "Capa de Presentación\nAngular 21 (SPA)" as ANG
+    }
+    node "Contenedor api\nSpring Boot 3.2 (Java 17)" as API {
+      component "Seguridad\nSpring Security + JWT" as SEC
+      component "Controladores REST\n(@RestController)" as CTRL
+      component "Servicios de negocio\n(@Service, @Transactional)" as SRV
+      component "Reportes\nOpenPDF / Apache POI / CSV" as REP
+      component "Repositorios\nSpring Data JPA / Hibernate" as REPO
+    }
+    database "Contenedor db\nPostgreSQL 16\n(volumen persistente)" as DB
+    node "pgAdmin 4\n(solo entorno local)" as PGA
+  }
+}
+
+cloud "Servicios externos" {
+  component "Culqi API\n(pagos)" as CULQI
+  component "Google / GitHub\nOAuth 2.0" as OAUTH
+}
+
+node "GitHub" as GH {
+  component "Repositorio Git\n(main / develop / tags)" as GIT
+  component "GitHub Actions\nCI: build + pruebas + Docker" as CI
+}
+
+U --> PROXY : HTTPS 443
+PROXY --> ANG : estáticos
+ANG ..> PROXY : HTTP/JSON (/api)
+PROXY --> SEC : /api/*
+SEC --> CTRL
+CTRL --> SRV
+SRV --> REP
+SRV --> REPO
+REPO --> DB : JDBC 5432\n(red interna Docker)
+PGA --> DB
+SRV --> CULQI : HTTPS
+SEC --> OAUTH : verificación de tokens
+GIT --> CI : push / pull request
+@enduml

@@ -1,0 +1,39 @@
+@startgantt 07-gantt
+title Cronograma del Proyecto (Scrum) - Mastery Academy - EFSRT V 2026
+language es
+printscale daily zoom 1
+saturday are closed
+sunday are closed
+Project starts 2026-09-07
+
+-- Sprint 0: Inicio y análisis --
+[Diagnóstico situacional y SEPTE] as [T1] lasts 4 days
+[Definición de objetivos SMART y alcance] as [T2] lasts 3 days
+[T2] starts at [T1]'s end
+[Product Backlog e historias de usuario] as [T3] lasts 3 days
+[T3] starts at [T1]'s end
+[Hito: Avance 1 (Semana 3)] happens 2026-09-25
+
+-- Sprint 1: Núcleo de la plataforma --
+[Diseño de arquitectura y modelo de datos] as [T4] starts 2026-09-14 and lasts 4 days
+[Autenticación JWT / OAuth y roles] as [T5] lasts 4 days
+[T5] starts at [T4]'s end
+[Catálogo, cursos, módulos y lecciones] as [T6] lasts 5 days
+[T6] starts at [T4]'s end
+
+-- Sprint 2: Proceso de negocio --
+[Pagos Culqi + inscripción transaccional] as [T7] starts 2026-09-28 and lasts 5 days
+[Progreso, exámenes y certificados] as [T8] starts 2026-09-28 and lasts 5 days
+[Benchmarking, ubicación y organización] as [T9] starts 2026-09-28 and lasts 4 days
+[Hito: Avance 2 (Semana 5)] happens 2026-10-09
+
+-- Sprint 3: Calidad, reportes y despliegue --
+[Reportes PDF / Excel / CSV y panel] as [T10] starts 2026-10-12 and lasts 3 days
+[Bloqueo optimista y auditoría] as [T11] starts 2026-10-12 and lasts 2 days
+[Pruebas unitarias e integración (JUnit)] as [T12] starts 2026-10-14 and lasts 2 days
+[Pipeline CI GitHub Actions] as [T13] starts 2026-10-14 and lasts 2 days
+[Pruebas de rendimiento (k6)] as [T14] starts 2026-10-15 and lasts 2 days
+[Despliegue Docker en GCP] as [T15] starts 2026-10-16 and lasts 2 days
+[Informe final, manuales y guía] as [T16] starts 2026-10-15 and lasts 4 days
+[Hito: Entrega final (Semana 7)] happens 2026-10-20
+@endgantt

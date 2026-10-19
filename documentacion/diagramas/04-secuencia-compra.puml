@@ -1,0 +1,44 @@
+@startuml 04-secuencia-compra
+title Diagrama de Secuencia - CU03 Comprar curso (transacción atómica)
+autonumber
+skinparam sequenceMessageAlign center
+actor Estudiante as E
+participant "Angular\n(payment.ts)" as FE
+participant "Culqi Checkout\n(JS)" as CJ
+participant "PaymentController" as PC
+participant "CourseService" as CS
+participant "Culqi API\n/v2/charges" as CA
+participant "PaymentService\n@Transactional" as PS
+database "PostgreSQL" as DB
+
+E -> FE : Clic en "Comprar"
+FE -> CJ : Abrir formulario de tarjeta
+E -> CJ : Ingresa datos de tarjeta
+CJ --> FE : token (tkn_...)
+FE -> PC : POST /api/payments/culqi\n{token, email, courseId} + JWT
+PC -> PC : Validar JWT y email de la sesión
+PC -> CS : isUserEnrolled(username, courseId)
+CS -> DB : SELECT user_courses
+DB --> CS : false
+PC -> CS : getCourseById(courseId)
+CS --> PC : course (precio desde BD)
+PC -> CA : POST charge {amount, token}\nBearer sk_...
+CA --> PC : 201 {id: chr_...}
+
+group Transacción ACID (READ_COMMITTED, rollbackFor = Exception)
+  PC -> PS : processSuccessfulPayment(...)
+  PS -> DB : existsByCulqiChargeId(chr_...)
+  PS -> DB : INSERT payments
+  PS -> CS : enrollUserInCourse()
+  CS -> DB : INSERT user_courses
+  CS -> DB : INSERT notifications
+  alt Todo correcto
+    PS -> DB : COMMIT
+  else Falla cualquier paso
+    PS -> DB : ROLLBACK (no queda pago huérfano)
+  end
+end
+
+PC --> FE : 200 {status: success, chargeId}
+FE --> E : Acceso al curso habilitado
+@enduml
