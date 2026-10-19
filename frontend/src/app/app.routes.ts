@@ -10,6 +10,7 @@ export const routes: Routes = [
   { path: 'course/:id/manage', loadComponent: () => import('./components/course-management').then(m => m.CourseManagementComponent) },
   { path: 'quiz/:courseId', loadComponent: () => import('./components/quiz').then(m => m.QuizComponent) },
   { path: 'admin/users', loadComponent: () => import('./components/admin-users').then(m => m.AdminUsersComponent) },
+  { path: 'admin/reports', loadComponent: () => import('./components/reports').then(m => m.ReportsComponent) },
   { path: 'admin/news', loadComponent: () => import('./components/news-management').then(m => m.NewsManagementComponent) },
   { path: 'instructors', loadComponent: () => import('./components/instructors').then(m => m.InstructorsComponent) },
   { path: 'profile', component: ProfileComponent },

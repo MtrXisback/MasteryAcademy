@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "courses")
+@EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -52,6 +53,20 @@ public class Course {
 
     @Column(name = "updated_at")
     private java.time.LocalDateTime updatedAt;
+
+    // Auditoría: usuario que creó / modificó por última vez el curso
+    @org.springframework.data.annotation.CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+
+    @org.springframework.data.annotation.LastModifiedBy
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
+
+    // Bloqueo optimista: Hibernate incrementa la versión en cada UPDATE y rechaza escrituras con versión obsoleta
+    @Version
+    @Column(columnDefinition = "bigint default 0 not null")
+    private Long version;
 
     @ManyToMany(mappedBy = "enrolledCourses")
     @com.fasterxml.jackson.annotation.JsonIgnore

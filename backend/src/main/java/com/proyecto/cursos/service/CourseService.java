@@ -132,6 +132,11 @@ public class CourseService {
     public Course updateCourse(Long id, Course courseDetails) {
         return courseRepository.findById(id)
                 .map(course -> {
+                    // Control de concurrencia: si el cliente envía la versión que leyó y ya no coincide,
+                    // otro usuario modificó el curso en el intermedio.
+                    if (courseDetails.getVersion() != null && !courseDetails.getVersion().equals(course.getVersion())) {
+                        throw new org.springframework.orm.ObjectOptimisticLockingFailureException(Course.class, id);
+                    }
                     course.setTitle(courseDetails.getTitle());
                     course.setDescription(courseDetails.getDescription());
                     // El instructor no debería cambiarse por un simple string en el update

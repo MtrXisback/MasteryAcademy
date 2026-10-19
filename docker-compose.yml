@@ -51,6 +51,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
       - CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
+      - TZ=America/Lima
     networks:
       - app_network
     depends_on:

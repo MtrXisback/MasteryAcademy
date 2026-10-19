@@ -6,10 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payments")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +35,13 @@ public class Payment {
 
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    // Auditoría: última modificación del registro (Spring Data JPA Auditing)
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    // Bloqueo optimista: evita que dos transacciones sobrescriban el mismo pago
+    @Version
+    @Column(columnDefinition = "bigint default 0 not null")
+    private Long version;
 }

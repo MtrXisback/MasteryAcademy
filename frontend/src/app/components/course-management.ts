@@ -413,9 +413,15 @@ export class CourseManagementComponent implements OnInit {
   updateStatus(status: 'DRAFT' | 'PUBLISHED'): void {
     if (this.course) {
       const updatedCourse = { ...this.course, status };
-      this.courseService.updateCourse(this.course.id!, updatedCourse).subscribe(() => {
-        this.course!.status = status;
-        this.cd.detectChanges();
+      this.courseService.updateCourse(this.course.id!, updatedCourse).subscribe({
+        next: (saved) => {
+          this.course!.status = status;
+          this.course!.version = saved.version;
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          if (err.status === 409) alert('Otro usuario modificó este curso. Recarga la página para ver los cambios.');
+        }
       });
     }
   }

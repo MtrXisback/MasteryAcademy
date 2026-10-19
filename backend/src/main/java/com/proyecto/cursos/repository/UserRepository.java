@@ -24,6 +24,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 
+    /** Resumen para reportes: [username, fullName, email, level, xp, enrolledCount, authProvider] */
+    @Query("SELECT u.username, u.fullName, u.email, u.level, u.xp, SIZE(u.enrolledCourses), u.authProvider " +
+           "FROM User u JOIN u.roles r WHERE r.name = :role ORDER BY u.xp DESC")
+    List<Object[]> findStudentSummary(@Param("role") ERole role);
+
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :role AND u.featured = true AND u.avatarUrl IS NOT NULL")
     List<User> findFeaturedInstructors(@Param("role") ERole role);
 }

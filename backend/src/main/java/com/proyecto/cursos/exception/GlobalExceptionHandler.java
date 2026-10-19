@@ -43,6 +43,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
+    // @PreAuthorize lanza AccessDeniedException: sin este handler caería en el genérico y respondería 500
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ProblemDetail handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "No tienes permisos para acceder a este recurso.");
+        problemDetail.setTitle("Acceso Denegado");
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(org.springframework.orm.ObjectOptimisticLockingFailureException.class)
+    public ProblemDetail handleOptimisticLockingFailure(org.springframework.orm.ObjectOptimisticLockingFailureException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "El registro fue modificado por otro usuario. Recarga la información e inténtalo nuevamente.");
+        problemDetail.setTitle("Conflicto de Concurrencia");
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGlobalException(Exception ex) {
         ex.printStackTrace(); // Log the actual stacktrace so the team can audit it on the server console

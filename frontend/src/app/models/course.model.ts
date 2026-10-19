@@ -15,4 +15,5 @@ export interface Course {
   modules?: Module[];
   createdAt?: string;
   updatedAt?: string;
+  version?: number; // bloqueo optimista: se reenvía en cada actualización
 }

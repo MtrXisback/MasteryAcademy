@@ -28,4 +28,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByIdWithContent(@Param("id") Long id);
 
     boolean existsByIdAndInstructor_Username(Long id, String username);
+
+    /** Resumen para reportes: [id, title, categoryName, instructorName, status, price, enrolledCount] */
+    @Query("SELECT c.id, c.title, cat.name, COALESCE(i.fullName, i.username), c.status, c.price, SIZE(c.enrolledStudents) " +
+           "FROM Course c LEFT JOIN c.category cat LEFT JOIN c.instructor i ORDER BY SIZE(c.enrolledStudents) DESC")
+    java.util.List<Object[]> findEnrollmentSummary();
 }

@@ -9,9 +9,11 @@ RUN mvn clean package -DskipTests
 # Stage 2: Create the production image
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
+# Fuentes necesarias para que Apache POI calcule el ancho de columnas en los reportes Excel
+RUN apk add --no-cache fontconfig ttf-dejavu
 # Copy the compiled jar from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 # Expose the application port
 EXPOSE 8080
 # Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Djava.awt.headless=true", "-jar", "app.jar"]

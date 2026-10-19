@@ -119,6 +119,12 @@ import { User } from '../models/auth.model';
               routerLink="/admin/users">
               👥 Gestionar Usuarios
             </button>
+            <button
+              *ngIf="authService.isAdmin()"
+              class="btn-premium btn-ghost btn-sm mr-2"
+              routerLink="/admin/reports">
+              📊 Reportes
+            </button>
             <button 
               *ngIf="authService.isInstructor() && !authService.isAdmin()" 
               class="btn-premium btn-sm"
@@ -1042,9 +1048,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   toggleCourseStatus(course: Course): void {
     const newStatus: any = course.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED';
     const updated = { ...course, status: newStatus };
-    this.courseService.updateCourse(course.id!, updated as Course).subscribe(() => {
-      course.status = newStatus;
-      this.cd.detectChanges();
+    this.courseService.updateCourse(course.id!, updated as Course).subscribe({
+      next: (saved) => {
+        course.status = newStatus;
+        course.version = saved.version;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        if (err.status === 409) alert('Otro usuario modificó este curso. Recarga la página para ver los cambios.');
+      }
     });
   }
 }
