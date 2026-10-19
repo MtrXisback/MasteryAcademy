@@ -174,7 +174,7 @@ public class DataInitializer implements CommandLineRunner {
             lessonRepository.save(Lesson.builder()
                     .title("¿Quiénes mueven el mercado?")
                     .description("Introducción a la liquidez bancaria.")
-                    .contentUrl("https://www.youtube.com/embed/dQw4w9WgXcQ")
+                    .contentUrl("https://www.youtube.com/embed/3EgDW-Y_zO4")
                     .orderIndex(1)
                     .courseModule(springModule1)
                     .build());
